@@ -1,0 +1,7 @@
+data/raw/
+*.accdb
+*.zip
+data/processed/strikes_clean.csv.gz
+__pycache__/
+.DS_Store
+.ipynb_checkpoints/
