@@ -13,6 +13,9 @@ import os
 
 import numpy as np
 import pandas as pd
+import warnings
+
+warnings.filterwarnings("ignore", category=pd.errors.PerformanceWarning)
 
 # ---------------------------------------------------------------- definitions
 DAMAGING = {"M", "M?", "S", "D"}          # FAA: any reported damage (matches INDICATED_DAMAGE)
@@ -90,7 +93,7 @@ def load_and_clean(raw_path):
     df = pd.read_csv(raw_path, dtype=str, keep_default_na=False, low_memory=False)
     for c in df.columns:
         df[c] = df[c].str.strip()
-    df = df.replace({"": np.nan})
+    df = df.mask(df.eq(""))
 
     df["INCIDENT_YEAR"] = df.INCIDENT_YEAR.astype(int)
     df["INCIDENT_MONTH"] = df.INCIDENT_MONTH.astype(int)
@@ -204,13 +207,13 @@ def q23_species(df):
     r["frequency_rank"] = r.n_reports.rank(ascending=False, method="min").astype(int)
     r["damage_rate_rank"] = r.damage_rate.rank(ascending=False, method="min").astype(int)
     t = t.merge(r[["species_label", "frequency_rank", "damage_rate_rank"]], on="species_label", how="left")
-    return t.sort_values("n_reports", ascending=False)
+    return t.sort_values(["n_reports", "species_label"], ascending=[False, True])
 
 
 def q2_family(df):
     t = rate_table(df, ["family_code", "family", "species_group"])
     t["share_of_all_reports"] = t.n_reports / len(df)
-    return t.sort_values("n_reports", ascending=False)
+    return t.sort_values(["n_reports", "family_code"], ascending=[False, True])
 
 
 def q2_family_region(df):
@@ -218,7 +221,7 @@ def q2_family_region(df):
     tot = df.groupby("faa_region").size().rename("region_reports")
     t = t.merge(tot, on="faa_region")
     t["share_within_region"] = t.n_reports / t.region_reports
-    return t.sort_values(["faa_region", "n_reports"], ascending=[True, False])
+    return t.sort_values(["faa_region", "n_reports", "species_group"], ascending=[True, False, True])
 
 
 def q4_components(df):
@@ -258,7 +261,7 @@ def q6_month_tod(df):
 
 def q7_airports(df, top=40):
     t = rate_table(df, ["airport_id", "airport_name", "state"])
-    t = t.sort_values("n_reports", ascending=False)
+    t = t.sort_values(["n_reports", "airport_id"], ascending=[False, True])  # ties broken by id
     keep = t.head(top)
     if "UNKNOWN" not in keep.airport_id.values:
         keep = pd.concat([keep, t[t.airport_id == "UNKNOWN"]])
@@ -291,7 +294,7 @@ def q8_combos(df):
     t = (sub[known].groupby(["species_group", "season", "phase_group"]).size()
          .rename("n_damaging").reset_index())
     t["share_of_all_damaging"] = t.n_damaging / len(sub)
-    t = t.sort_values("n_damaging", ascending=False)
+    t = t.sort_values(["n_damaging", "species_group", "season", "phase_group"], ascending=[False, True, True, True])
     t["cumulative_share"] = t.share_of_all_damaging.cumsum()
     # denominators: damage-coded reports in the same cell -> conditional damage rate
     coded = (df[df.damage_coded].groupby(["species_group", "season", "phase_group"]).size()
@@ -327,11 +330,12 @@ def sensitivity(species):
     """Does dropping M? (undetermined) or using the FAA all-reports denominator reorder species?"""
     r = species[species.rankable].copy()
     r["rate_strict"] = r.n_damaging_strict / r.n_damage_coded
+    spearman = lambda a, b: a.rank().corr(b.rank())  # Spearman = Pearson on ranks (no scipy needed)
     out = dict(
         n_ranked_species=len(r),
-        spearman_rate_vs_strict=r.damage_rate.corr(r.rate_strict, method="spearman"),
-        spearman_rate_vs_all_reports=r.damage_rate.corr(r.damage_rate_all_reports, method="spearman"),
-        spearman_frequency_vs_rate=r.n_reports.corr(r.damage_rate, method="spearman"),
+        spearman_rate_vs_strict=spearman(r.damage_rate, r.rate_strict),
+        spearman_rate_vs_all_reports=spearman(r.damage_rate, r.damage_rate_all_reports),
+        spearman_frequency_vs_rate=spearman(r.n_reports, r.damage_rate),
     )
     return pd.DataFrame([out])
 

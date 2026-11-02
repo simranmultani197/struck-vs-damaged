@@ -263,7 +263,8 @@ def export_csv(accdb_path, csv_path):
         w = csv.DictWriter(fh, fieldnames=names)
         w.writeheader()
         for r in db.iter_rows(pg, cols):
-            w.writerow(r)
+            # a few free-text remarks contain NUL bytes, which Python < 3.12's csv module cannot write
+            w.writerow({k: v.replace("\x00", "") if isinstance(v, str) else v for k, v in r.items()})
             n += 1
     return n, names
 
