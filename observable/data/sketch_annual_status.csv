@@ -1,0 +1,112 @@
+year,partial_year,status,n
+1990,false,"Damaging (M, M?, S, D)",371
+1991,false,"Damaging (M, M?, S, D)",400
+1992,false,"Damaging (M, M?, S, D)",364
+1993,false,"Damaging (M, M?, S, D)",399
+1994,false,"Damaging (M, M?, S, D)",459
+1995,false,"Damaging (M, M?, S, D)",500
+1996,false,"Damaging (M, M?, S, D)",503
+1997,false,"Damaging (M, M?, S, D)",575
+1998,false,"Damaging (M, M?, S, D)",587
+1999,false,"Damaging (M, M?, S, D)",705
+2000,false,"Damaging (M, M?, S, D)",765
+2001,false,"Damaging (M, M?, S, D)",649
+2002,false,"Damaging (M, M?, S, D)",670
+2003,false,"Damaging (M, M?, S, D)",630
+2004,false,"Damaging (M, M?, S, D)",631
+2005,false,"Damaging (M, M?, S, D)",609
+2006,false,"Damaging (M, M?, S, D)",603
+2007,false,"Damaging (M, M?, S, D)",568
+2008,false,"Damaging (M, M?, S, D)",528
+2009,false,"Damaging (M, M?, S, D)",608
+2010,false,"Damaging (M, M?, S, D)",604
+2011,false,"Damaging (M, M?, S, D)",547
+2012,false,"Damaging (M, M?, S, D)",627
+2013,false,"Damaging (M, M?, S, D)",616
+2014,false,"Damaging (M, M?, S, D)",592
+2015,false,"Damaging (M, M?, S, D)",624
+2016,false,"Damaging (M, M?, S, D)",598
+2017,false,"Damaging (M, M?, S, D)",681
+2018,false,"Damaging (M, M?, S, D)",725
+2019,false,"Damaging (M, M?, S, D)",765
+2020,false,"Damaging (M, M?, S, D)",494
+2021,false,"Damaging (M, M?, S, D)",667
+2022,false,"Damaging (M, M?, S, D)",703
+2023,false,"Damaging (M, M?, S, D)",721
+2024,false,"Damaging (M, M?, S, D)",823
+2025,false,"Damaging (M, M?, S, D)",905
+2026,true,"Damaging (M, M?, S, D)",474
+1990,false,Not damaging (N),1331
+1991,false,Not damaging (N),1758
+1992,false,Not damaging (N),1854
+1993,false,Not damaging (N),1723
+1994,false,Not damaging (N),1842
+1995,false,Not damaging (N),1942
+1996,false,Not damaging (N),1915
+1997,false,Not damaging (N),2294
+1998,false,Not damaging (N),2292
+1999,false,Not damaging (N),3558
+2000,false,Not damaging (N),4140
+2001,false,Not damaging (N),3992
+2002,false,Not damaging (N),4252
+2003,false,Not damaging (N),4102
+2004,false,Not damaging (N),4470
+2005,false,Not damaging (N),4851
+2006,false,Not damaging (N),4551
+2007,false,Not damaging (N),4587
+2008,false,Not damaging (N),4297
+2009,false,Not damaging (N),5743
+2010,false,Not damaging (N),5606
+2011,false,Not damaging (N),5756
+2012,false,Not damaging (N),6302
+2013,false,Not damaging (N),6432
+2014,false,Not damaging (N),8113
+2015,false,Not damaging (N),8243
+2016,false,Not damaging (N),7665
+2017,false,Not damaging (N),7430
+2018,false,Not damaging (N),8635
+2019,false,Not damaging (N),9103
+2020,false,Not damaging (N),5405
+2021,false,Not damaging (N),8010
+2022,false,Not damaging (N),9324
+2023,false,Not damaging (N),11078
+2024,false,Not damaging (N),12779
+2025,false,Not damaging (N),15250
+2026,true,Not damaging (N),8491
+1990,false,Damage not coded,418
+1991,false,Damage not coded,357
+1992,false,Damage not coded,434
+1993,false,Damage not coded,503
+1994,false,Damage not coded,406
+1995,false,Damage not coded,385
+1996,false,Damage not coded,613
+1997,false,Damage not coded,691
+1998,false,Damage not coded,929
+1999,false,Damage not coded,855
+2000,false,Damage not coded,1124
+2001,false,Damage not coded,1188
+2002,false,Damage not coded,1301
+2003,false,Damage not coded,1260
+2004,false,Damage not coded,1511
+2005,false,Damage not coded,1812
+2006,false,Damage not coded,2140
+2007,false,Damage not coded,2595
+2008,false,Damage not coded,2815
+2009,false,Damage not coded,3158
+2010,false,Damage not coded,3691
+2011,false,Damage not coded,3809
+2012,false,Damage not coded,4008
+2013,false,Damage not coded,4357
+2014,false,Damage not coded,4985
+2015,false,Damage not coded,4909
+2016,false,Damage not coded,5117
+2017,false,Damage not coded,6643
+2018,false,Damage not coded,6845
+2019,false,Damage not coded,7477
+2020,false,Damage not coded,5728
+2021,false,Damage not coded,6964
+2022,false,Damage not coded,7196
+2023,false,Damage not coded,7824
+2024,false,Damage not coded,8768
+2025,false,Damage not coded,8302
+2026,true,Damage not coded,5463

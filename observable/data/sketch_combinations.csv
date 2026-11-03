@@ -1,0 +1,16 @@
+label,species_group,season,phase_group,n_damaging,share_of_all_damaging,cumulative_share,damage_rate_in_cell,n_damage_coded_cell
+Waterfowl · Fall · Arrival,Waterfowl,Fall,Arrival,639,0.0286675639300134,0.0286675639300134,0.4907834101382488,1302.0
+Waterfowl · Winter · Arrival,Waterfowl,Winter,Arrival,485,0.0217586361597128,0.0504262000897263,0.449074074074074,1080.0
+Waterfowl · Spring · Arrival,Waterfowl,Spring,Arrival,424,0.0190219829519964,0.0694481830417227,0.4140625,1024.0
+Terrestrial mammals · Fall · Arrival,Terrestrial mammals,Fall,Arrival,387,0.0173620457604306,0.0868102288021534,0.5682819383259912,681.0
+Raptors & vultures · Fall · Arrival,Raptors & vultures,Fall,Arrival,378,0.0169582772543741,0.1037685060565275,0.2139219015280135,1767.0
+Raptors & vultures · Spring · Arrival,Raptors & vultures,Spring,Arrival,368,0.016509645580978,0.1202781516375056,0.2837316885119506,1297.0
+Raptors & vultures · Summer · Arrival,Raptors & vultures,Summer,Arrival,348,0.0156123822341857,0.1358905338716913,0.1720217498764211,2023.0
+Gulls & terns · Spring · Departure,Gulls & terns,Spring,Departure,312,0.0139973082099596,0.1498878420816509,0.248605577689243,1255.0
+Raptors & vultures · Fall · Departure,Raptors & vultures,Fall,Departure,285,0.01278600269179,0.162673844773441,0.2838645418326693,1004.0
+Terrestrial mammals · Summer · Arrival,Terrestrial mammals,Summer,Arrival,285,0.01278600269179,0.175459847465231,0.475,600.0
+Waterfowl · Fall · Departure,Waterfowl,Fall,Departure,277,0.0124270973530731,0.1878869448183041,0.6061269146608315,457.0
+Raptors & vultures · Winter · Arrival,Raptors & vultures,Winter,Arrival,267,0.0119784656796769,0.1998654104979811,0.2880258899676375,927.0
+Raptors & vultures · Spring · Departure,Raptors & vultures,Spring,Departure,260,0.0116644235082996,0.2115298340062808,0.3667136812411847,709.0
+Raptors & vultures · Summer · Departure,Raptors & vultures,Summer,Departure,257,0.0115298340062808,0.2230596680125616,0.2292595896520963,1121.0
+Gulls & terns · Fall · Departure,Gulls & terns,Fall,Departure,251,0.0112606550022431,0.2343203230148048,0.2381404174573055,1054.0
