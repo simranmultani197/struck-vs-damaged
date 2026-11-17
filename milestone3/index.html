@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Struck vs. Damaged — Milestone 3 (D3 first draft)</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; max-width: 1000px; margin: 0 auto; padding: 24px 16px 80px; color: #222; background: #fff; }
+  h1 { margin-bottom: 0; } h2 { margin-top: 48px; border-top: 1px solid #ddd; padding-top: 20px; }
+  .controls { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; margin: 8px 0 12px; font-size: 14px; }
+  .controls label { display: flex; gap: 6px; align-items: center; }
+  .q { font-weight: 600; } .note { color: #555; font-size: 14px; }
+  nav a { margin-right: 12px; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="views.js"></script>
+</head>
+<body>
+<h1>Struck vs. Damaged</h1>
+<p class="note">Team 10 (Flight Risk): Simranjeet Singh, Astha Vairat · CS-GY 6313 · Milestone 3 local preview of the D3 views (the write-up lives in the Observable notebook and <code>milestone3/README.md</code>). Hover any mark for exact counts, rates and 95% intervals.</p>
+<nav><a href="#b">Q1</a><a href="#a">Q2–Q3</a><a href="#c1">Q4</a><a href="#c2">Q5</a><a href="#c3">Q6</a><a href="#d">Q7</a><a href="#e">Q8</a></nav>
+
+<h2 id="b">Q1 · How many strikes are reported each year?</h2>
+<div class="controls"><label><input type="radio" name="bmode" value="count" checked> counts</label><label><input type="radio" name="bmode" value="share"> share of reports</label></div>
+<div id="viewB"></div>
+
+<h2 id="a">Q2–Q3 · What gets struck most vs. what does damage</h2>
+<div class="controls">
+  <label>Level <select id="alevel"><option>Species</option><option>Family</option></select></label>
+  <label><input type="checkbox" id="afacet"> facet by size</label>
+  <label>Highlight <input id="asearch" placeholder="e.g. goose" size="14"></label>
+</div>
+<div id="viewA"></div><div id="viewASlope"></div>
+<div class="controls"><label>FAA region <select id="aregion"></select></label></div>
+<div id="viewARegion"></div>
+
+<h2 id="c1">Q4 · Components</h2>
+<div class="controls"><label>Sort by <select id="c1sort"><option value="n_struck">reports struck</option><option value="component_damage_rate">damage rate</option></select></label></div>
+<div id="viewC1"></div>
+
+<h2 id="c2">Q5 · Phase of flight and height</h2>
+<div class="controls"><label>Phase group <select id="c2group"><option>Departure</option><option>Arrival</option><option>En route</option><option>Local</option></select></label></div>
+<div id="viewC2"></div>
+
+<h2 id="c3">Q6 · Month and time of day</h2>
+<div class="controls"><label>Heatmap shows <select id="c3metric"><option value="damage_rate">damage rate</option><option value="n_reports">reports</option></select></label></div>
+<div id="viewC3"></div>
+
+<h2 id="d">Q7 · Airports (stretch)</h2>
+<div class="controls"><label>Sort by <select id="dsort"><option value="n_reports">reports</option><option value="pct_damage_coded">% damage-coded</option><option value="damage_rate">damage rate</option></select></label></div>
+<div id="viewD"></div>
+
+<h2 id="e">Q8 · Where damaging strikes concentrate</h2>
+<div class="controls">
+  <label>Season <select id="eseason"><option>All</option><option>Winter</option><option>Spring</option><option>Summer</option><option>Fall</option></select></label>
+  <label>Phase group <select id="ephase"><option>All</option><option>Arrival</option><option>Departure</option><option>En route</option><option>Local</option><option>Ground</option></select></label>
+</div>
+<div id="viewE"></div>
+
+<script>
+const DATA = "../data/processed/";
+const load = f => d3.csv(DATA + f, d3.autoType);
+Promise.all(["q1_annual.csv", "q2q3_species.csv", "q2_family.csv", "q2_group_by_region.csv", "q4_components.csv",
+             "q5_phase.csv", "q5_phase_height.csv", "q6_month.csv", "q6_month_time_of_day.csv", "q7_airports.csv",
+             "q8_combinations.csv"].map(load))
+.then(([annual, species, family, byRegion, components, phase, phaseHeight, month, monthTod, airports, combos]) => {
+  const W = () => Math.min(document.body.clientWidth - 32, 960);
+  const put = (id, node) => { const el = document.getElementById(id); el.replaceChildren(node); };
+  const $ = id => document.getElementById(id);
+  const regions = [...new Set(byRegion.map(d => d.faa_region))];
+  $("aregion").innerHTML = regions.map(r => `<option ${r === "AEA" ? "selected" : ""}>${r}</option>`).join("");
+  const draw = () => {
+    put("viewB", viewB(annual, {width: W(), mode: document.querySelector("input[name=bmode]:checked").value}));
+    put("viewA", viewA(species, family, {width: W(), level: $("alevel").value, facet: $("afacet").checked, highlight: $("asearch").value}));
+    put("viewASlope", viewASlope(species, {width: Math.min(W(), 640)}));
+    put("viewARegion", viewARegion(byRegion, {width: W(), region: $("aregion").value}));
+    put("viewC1", viewC1(components, {width: W(), sortBy: $("c1sort").value}));
+    put("viewC2", viewC2(phase, phaseHeight, {width: W(), group: $("c2group").value}));
+    put("viewC3", viewC3(month, monthTod, {width: W(), metric: $("c3metric").value}));
+    put("viewD", viewD(airports, {width: W(), sortBy: $("dsort").value}));
+    put("viewE", viewE(combos, {width: W(), season: $("eseason").value, phaseGroup: $("ephase").value}));
+  };
+  document.querySelectorAll("input, select").forEach(el => el.addEventListener("input", draw));
+  window.addEventListener("resize", draw);
+  draw();
+});
+</script>
+</body>
+</html>
