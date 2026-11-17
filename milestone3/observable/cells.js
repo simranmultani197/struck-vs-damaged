@@ -301,27 +301,29 @@ md`## AI-use statement
 AI tools were used for this milestone.
 
 **Where we used AI.**
-1. *Coding.* From our Milestone 2 sketch specifications, Claude generated the first version of all D3 view code:
+1. *Debugging and recommendations.* We wrote the D3 view code ourselves from our Milestone 2 sketch specifications:
    - \`milestone3/views.js\`
    - the local preview page \`milestone3/index.html\`
    - the notebook build script, and the Observable cell file it produces.
 
-   We specified each view (encodings, interactions, missing-data handling), ran the code, reviewed the output,
-   and asked for fixes where labels overlapped or encodings were unclear.
-2. *Writing.* Claude drafted the per-question descriptions in this write-up from the processed tables. We checked
-   every number against \`data/processed/*.csv\` and edited the wording.
-3. *Earlier milestones.* We used AI to brainstorm project ideas, review the proposal and the instructor feedback,
+   We used Claude as a debugging and review aid: we pasted error messages and code snippets to help find bugs,
+   asked for suggestions when labels overlapped or encodings were unclear, and asked about D3 APIs and
+   good practice (scales, transitions, handling missing data). We decided which suggestions to use and
+   wrote or adapted the code ourselves.
+2. *Earlier milestones.* We used AI to brainstorm project ideas, review the proposal and the instructor feedback,
    check FAA definitions, draft parts of the data pipeline and report text, debug code, and draft README sections.
 
 **What is our own work.**
 - The project question and the analysis decisions: denominators, the damaging-strike definition, handling of
   missing data, descoping.
 - The data pipeline design and its outputs.
+- The D3 implementation of all views.
+- The written descriptions in this write-up.
 - The choice of views and interactions.
 - Testing and verification of the visualizations.
 
-In this milestone most of the D3 code was AI-generated from our specifications, and the review, testing and
-decisions were ours.
+In this milestone we wrote the D3 code, and Claude helped with debugging, code review and
+design recommendations. The implementation, testing and decisions were ours.
 
 **Verification.** Every figure quoted here can be reproduced from the CSVs in \`data/processed/\`, which are produced
 by \`pipeline/build.py\` from the FAA download.`
