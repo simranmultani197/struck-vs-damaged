@@ -134,7 +134,7 @@ def write_readme():
          C.INTRO, "",
          "## How to view and run", "",
          f"1. **Observable notebook (main delivery):** {C.NOTEBOOK_URL}. The notebook runs every view live, with its "
-         "controls, and contains all of the D3 code in its last cell. It loads data straight from this repository.",
+         "controls, and contains all of the D3 code in its last cell (the *D3 code* cell). It loads data straight from this repository.",
          "2. **Run it locally (no Observable needed):**",
          "   ```bash",
          "   git clone " + C.REPO + ".git",
@@ -149,7 +149,8 @@ def write_readme():
          "| File | Purpose |", "| --- | --- |",
          "| `milestone3/views.js` | All D3 view functions (one per chart) and shared helpers |",
          "| `milestone3/index.html` | Local page that renders every view with its controls |",
-         "| `milestone3/observable/cells.js` | The Observable notebook as 12 cells, in paste order |",
+         "| `milestone3/observable/cells_notebook2.js` | The cells of the published notebook (Observable Notebooks 2.0, plain-JavaScript cells), in order |",
+         "| `milestone3/observable/cells.js` | The same notebook in classic Observable syntax (for classic notebooks) |",
          "| `milestone3/content.py`, `build_notebook.py` | Write-up text and the script that builds `cells.js` and this README |",
          "| `milestone3/screenshots/` | Static captures of each view, used below |",
          ""]
@@ -171,3 +172,80 @@ if __name__ == "__main__":
     cells = write_cells()
     write_readme()
     print(f"cells.js: {len(cells)} cells · README.md written")
+
+
+# ---------------------------------------------------------------- Observable Notebooks 2.0 (plain-JS cells)
+def _html(md_text):
+    import markdown
+    import re as _re
+    lines, out = md_text.split("\n"), []
+    for ln in lines:   # python-markdown needs a blank line before a list that follows a paragraph
+        is_item = bool(_re.match(r"^(- |\d+\. )", ln))
+        if is_item and out and out[-1].strip() and not _re.match(r"^(- |\d+\. )", out[-1]):
+            out.append("")
+        out.append(ln)
+    return markdown.markdown("\n".join(out), tab_length=2)
+
+
+def kit_text_cell(md_text):
+    """A JS cell that displays pre-rendered HTML (no md`` tag needed)."""
+    return ("{\n  const el = document.createElement(\"div\");\n  el.innerHTML = " + json.dumps(_html(md_text), ensure_ascii=False)
+            + ";\n  display(el);\n}")
+
+
+def kit_question_cell(q):
+    decls, names, calls = SPEC[q["id"]]
+    funcs = ", ".join(f"V.{v}" for v in q["cells"])
+    head = _html(f"## {q['id']} · View {q['view']}\n\n**Question.** {q['q']}")
+    foot = _html(q["shows"] + f"\n\n*D3 code:* {funcs} in the **D3 code** cell at the end of this notebook.")
+    body = "\n  ".join(decls)
+    return f"""{{
+  // {q['id']}: controls re-draw the chart(s) in place
+  {body}
+  const out = document.createElement("div");
+  const draw = () => out.replaceChildren(...[{", ".join(calls)}]);
+  [{", ".join(names)}].forEach(c => c.addEventListener("input", draw));
+  draw();
+  const head = document.createElement("div"); head.innerHTML = {json.dumps(head, ensure_ascii=False)};
+  const foot = document.createElement("div"); foot.innerHTML = {json.dumps(foot, ensure_ascii=False)};
+  const controls = html`<div style="display:flex;flex-wrap:wrap;gap:4px 24px;margin:8px 0">${{[{", ".join(names)}]}}</div>`;
+  display(html`<div>${{head}}${{controls}}${{out}}${{foot}}</div>`);
+}}"""
+
+
+def kit_cells():
+    cells = [("Title (markdown cell)", "# Struck vs. Damaged\n\n" + C.INTRO + f"\n\nRepository: {C.REPO} · Milestone 2 record: {M2_URL}")]
+    for q in C.QUESTIONS:
+        cells.append((f"{q['id']}", kit_question_cell(q)))
+    cells.append(("Next steps", kit_text_cell(C.NEXT)))
+    cells.append(("AI-use statement", kit_text_cell("## AI-use statement\n\n" + C.AI_STATEMENT)))
+    files = json.dumps(DATA, indent=2)
+    cells.append(("Data", f"""const data = await (async () => {{
+  // Processed tables, read straight from the public GitHub repository (no file uploads needed)
+  const base = "{RAW}";
+  const files = {files};
+  const tables = await Promise.all(Object.entries(files).map(async ([k, f]) => [k, await d3.csv(base + f, d3.autoType)]));
+  return Object.fromEntries(tables);
+}})();"""))
+    body = "\n".join("  " + l if l.strip() else "" for l in SRC.strip().split("\n"))
+    cells.append(("D3 code", f"""const V = (() => {{
+  // ===== D3 code for every view (same as milestone3/views.js in the repository) =====
+{body}
+
+  return {{{", ".join(VIEWS)}}};
+}})();"""))
+    return cells
+
+
+def write_kit():
+    out = ["// Struck vs. Damaged - Milestone 3, Observable Notebooks 2.0 (plain JavaScript cells).",
+           "// Cell 1 is a Markdown cell; all others are JavaScript cells. Paste in order.", ""]
+    cells = kit_cells()
+    for i, (label, code) in enumerate(cells, 1):
+        out += [f"// ---- cell {i}: {label}", code, ""]
+    (HERE / "observable" / "cells_notebook2.js").write_text("\n".join(out))
+    return cells
+
+
+if __name__ == "__main__":
+    print("notebook 2.0 cells:", len(write_kit()))

@@ -29,7 +29,7 @@ reported damaging strikes are concentrated.
 
 ## How to view and run
 
-1. **Observable notebook (main delivery):** https://observablehq.com/@[your-handle]/struck-vs-damaged-m3. The notebook runs every view live, with its controls, and contains all of the D3 code in its last cell. It loads data straight from this repository.
+1. **Observable notebook (main delivery):** https://observablehq.com/d/459b21075dde1498. The notebook runs every view live, with its controls, and contains all of the D3 code in its last cell (the *D3 code* cell). It loads data straight from this repository.
 2. **Run it locally (no Observable needed):**
    ```bash
    git clone https://github.com/simranmultani197/struck-vs-damaged.git
@@ -44,7 +44,8 @@ reported damaging strikes are concentrated.
 | --- | --- |
 | `milestone3/views.js` | All D3 view functions (one per chart) and shared helpers |
 | `milestone3/index.html` | Local page that renders every view with its controls |
-| `milestone3/observable/cells.js` | The Observable notebook as 12 cells, in paste order |
+| `milestone3/observable/cells_notebook2.js` | The cells of the published notebook (Observable Notebooks 2.0, plain-JavaScript cells), in order |
+| `milestone3/observable/cells.js` | The same notebook in classic Observable syntax (for classic notebooks) |
 | `milestone3/content.py`, `build_notebook.py` | Write-up text and the script that builds `cells.js` and this README |
 | `milestone3/screenshots/` | Static captures of each view, used below |
 
@@ -113,7 +114,7 @@ and rates.
 - Hover for counts, intervals and both ranks.
 - Pick a region in the region panel.
 
-**D3 code:** `viewA` ([views.js line 129](views.js#L129)), `viewASlope` ([views.js line 209](views.js#L209)), `viewARegion` ([views.js line 236](views.js#L236)), also in the notebook's *D3 code* cell.
+**D3 code:** `viewA` ([views.js line 130](views.js#L130)), `viewASlope` ([views.js line 211](views.js#L211)), `viewARegion` ([views.js line 239](views.js#L239)), also in the notebook's *D3 code* cell.
 
 ## Q4 · View C1
 
@@ -134,7 +135,7 @@ and rates.
 **Interaction:** sort by reports struck or by damage rate; hover for the part-level and whole-aircraft damage
 rates.
 
-**D3 code:** `viewC1` ([views.js line 262](views.js#L262)), also in the notebook's *D3 code* cell.
+**D3 code:** `viewC1` ([views.js line 266](views.js#L266)), also in the notebook's *D3 code* cell.
 
 ## Q5 · View C2
 
@@ -158,7 +159,7 @@ rates.
 **Interaction:** choose the phase group (departure, arrival, en route, local) for the height profile; hover any
 row for counts and intervals.
 
-**D3 code:** `viewC2` ([views.js line 297](views.js#L297)), also in the notebook's *D3 code* cell.
+**D3 code:** `viewC2` ([views.js line 302](views.js#L302)), also in the notebook's *D3 code* cell.
 
 ## Q6 · View C3
 
@@ -183,7 +184,7 @@ row for counts and intervals.
 
 **Interaction:** switch the heatmap between damage rate and report counts; hover any month or cell.
 
-**D3 code:** `viewC3` ([views.js line 350](views.js#L350)), also in the notebook's *D3 code* cell.
+**D3 code:** `viewC3` ([views.js line 356](views.js#L356)), also in the notebook's *D3 code* cell.
 
 ## Q7 · View D
 
@@ -205,7 +206,7 @@ row for counts and intervals.
 
 **Interaction:** sort by reports, % damage-coded or damage rate; hover for details.
 
-**D3 code:** `viewD` ([views.js line 397](views.js#L397)), also in the notebook's *D3 code* cell.
+**D3 code:** `viewD` ([views.js line 404](views.js#L404)), also in the notebook's *D3 code* cell.
 
 ## Q8 · View E
 
@@ -231,7 +232,7 @@ row for counts and intervals.
 **Interaction:** filter by season and phase group, and the ranking and the 100% bar recompute; hover for counts
 and in-cell rates.
 
-**D3 code:** `viewE` ([views.js line 427](views.js#L427)), also in the notebook's *D3 code* cell.
+**D3 code:** `viewE` ([views.js line 435](views.js#L435)), also in the notebook's *D3 code* cell.
 
 ## Next steps
 

@@ -399,6 +399,7 @@ V = {
   // ------------------------------------------------------------------ View B · Q1
   // Reports per year by damage status (stacked) + damage rate with 95% CI.
   function viewB(annual, {width = 900, mode = "count"} = {}) {
+    width = Math.max(width, 820);   // narrow screens: draw at a readable size, the SVG then scales down
     const data = annual.map(d => ({...d, partial: String(d.partial_year) === "True" || d.partial_year === true}));
     const H = 560, m = {l: 64, r: 24}, top = {t: 70, h: 300}, bot = {t: 420, h: 110};
     const svg = base(width, H);
@@ -479,6 +480,7 @@ V = {
   // Frequency (x, log) vs damage rate (y) per species or family, with CI, size encoding,
   // "Unknown bird" reference rings, optional facets by size, and a search highlight.
   function viewA(species, family, {width = 900, level = "Species", facet = false, highlight = ""} = {}) {
+    width = Math.max(width, 820);   // narrow screens: draw at a readable size, the SVG then scales down
     const isSp = level === "Species";
     const pts = isSp ? species.filter(d => String(d.rankable) === "True" || d.rankable === true)
                      : family.filter(d => d.family_code !== "UNK" && d.n_damage_coded >= 30);
@@ -559,6 +561,7 @@ V = {
 
   // Companion: frequency rank vs damage-rate rank for the 15 most-struck ranked species.
   function viewASlope(species, {width = 420} = {}) {
+    width = Math.max(width, 600);   // narrow screens: draw at a readable size, the SVG then scales down
     const top = species.filter(d => String(d.rankable) === "True" || d.rankable === true)
       .sort((a, b) => a.frequency_rank - b.frequency_rank).slice(0, 15);
     const H = 470, m = {t: 70, b: 30}, xL = 150, xR = width - 170;
@@ -586,6 +589,7 @@ V = {
 
   // Q2 region mix: species-group share within one FAA region, with damage rate.
   function viewARegion(byRegion, {width = 900, region = "AEA"} = {}) {
+    width = Math.max(width, 820);   // narrow screens: draw at a readable size, the SVG then scales down
     const rows = byRegion.filter(d => d.faa_region === region).sort((a, b) => b.share_within_region - a.share_within_region);
     const H = 70 + rows.length * 22 + 40, m = {l: 190, t: 70}, mid = m.l + (width - m.l) * 0.55;
     const svg = base(width, H);
@@ -612,6 +616,7 @@ V = {
 
   // ------------------------------------------------------------------ View C1 · Q4 components
   function viewC1(components, {width = 900, sortBy = "n_struck"} = {}) {
+    width = Math.max(width, 820);   // narrow screens: draw at a readable size, the SVG then scales down
     const rows = components.filter(d => d.component !== "No component flagged")
       .sort((a, b) => d3.descending(a[sortBy], b[sortBy]));
     const none = components.find(d => d.component === "No component flagged");
@@ -647,6 +652,7 @@ V = {
   // ------------------------------------------------------------------ View C2 · Q5 phase & height
   const BANDS = ["0 ft (on ground)", "1–500 ft", "501–1,500 ft", "1,501–3,500 ft", ">3,500 ft"];
   function viewC2(phase, phaseHeight, {width = 900, group = "Departure"} = {}) {
+    width = Math.max(width, 820);   // narrow screens: draw at a readable size, the SVG then scales down
     const H = 640, m = {l: 130, t: 70};
     const svg = base(width, H);
     title(svg, "C2 · Fewer strikes up high, but more of them do damage",
@@ -700,6 +706,7 @@ V = {
 
   // ------------------------------------------------------------------ View C3 · Q6 month & time of day
   function viewC3(month, monthTod, {width = 900, metric = "damage_rate"} = {}) {
+    width = Math.max(width, 820);   // narrow screens: draw at a readable size, the SVG then scales down
     const H = 560, m = {l: 90, r: 20, t: 70};
     const svg = base(width, H);
     const M = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ");
@@ -747,6 +754,7 @@ V = {
 
   // ------------------------------------------------------------------ View D · Q7 airports (fallback)
   function viewD(airports, {width = 900, sortBy = "n_reports", totalReports = 357987} = {}) {
+    width = Math.max(width, 820);   // narrow screens: draw at a readable size, the SVG then scales down
     const unk = airports.find(d => d.airport_id === "UNKNOWN");
     const rows = airports.filter(d => d.airport_id !== "UNKNOWN").sort((a, b) => d3.descending(a[sortBy], b[sortBy]));
     const hasOps = rows.some(d => d.strikes_per_100k_ops);
@@ -777,6 +785,7 @@ V = {
 
   // ------------------------------------------------------------------ View E · Q8 synthesis
   function viewE(combos, {width = 900, season = "All", phaseGroup = "All", topN = 15} = {}) {
+    width = Math.max(width, 820);   // narrow screens: draw at a readable size, the SVG then scales down
     const missing = combos.find(d => d.season === "—");
     const known = combos.filter(d => d.season !== "—");
     const total = d3.sum(combos, d => d.n_damaging);

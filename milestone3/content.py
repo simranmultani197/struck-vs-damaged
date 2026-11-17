@@ -1,7 +1,7 @@
 """Shared write-up text for Milestone 3 (used by build_notebook.py for the Observable
 notebook and for milestone3/README.md). Numbers come from data/processed/*.csv."""
 
-NOTEBOOK_URL = "https://observablehq.com/@[your-handle]/struck-vs-damaged-m3"   # <- replace after publishing
+NOTEBOOK_URL = "https://observablehq.com/d/459b21075dde1498"
 REPO = "https://github.com/simranmultani197/struck-vs-damaged"
 
 INTRO = """**Team 10: Flight Risk** · Simranjeet Singh (xs2797) · Astha Vairat (aav7237)
